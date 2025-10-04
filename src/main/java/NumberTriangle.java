@@ -121,9 +121,6 @@ public class NumberTriangle {
         String line = br.readLine();
         while (line != null) {
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
-
             if (previousLine.length == 0) {
                 top = new NumberTriangle(Integer.parseInt(line));
                 previousLine = new NumberTriangle[] {top};
