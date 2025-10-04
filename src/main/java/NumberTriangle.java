@@ -88,7 +88,10 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
+        // fast fail: path.length() == 0
+        if (path.isEmpty()) {return root;}
+        if (path.charAt(0) == 'r') {return right.retrieve(path.substring(1));}
+        if (path.charAt(0) == 'l') {return left.retrieve(path.substring(1));}
         return -1;
     }
 
@@ -109,8 +112,7 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
+        NumberTriangle[] previousLine = new NumberTriangle[0];
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -122,8 +124,22 @@ public class NumberTriangle {
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
 
-            // TODO process the line
+            if (previousLine.length == 0) {
+                top = new NumberTriangle(Integer.parseInt(line));
+                previousLine = new NumberTriangle[] {top};
 
+            } else {
+                String[] currentLine = line.split(" ");
+                NumberTriangle[] currentLineTriangles = new NumberTriangle[currentLine.length];
+                for (int i = 0; i < currentLine.length; i++) {
+                    NumberTriangle triangle = new NumberTriangle(Integer.parseInt(currentLine[i]));
+                    currentLineTriangles[i] = triangle;
+                }
+                for (int i = 0; i < previousLine.length; i++) {
+                    previousLine[i].setLeft(currentLineTriangles[i]);
+                    previousLine[i].setRight(currentLineTriangles[i + 1]);
+                }
+            }
             //read the next line
             line = br.readLine();
         }
